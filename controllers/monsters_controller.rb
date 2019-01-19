@@ -44,9 +44,9 @@ class MonstersController < Sinatra::Base
   post "/" do
     monster = Monster.new
     monster.name = params[:name]
-    monster.class = params[:class]
-    monster.primary_element = params[:primary_element]
-    monster.primary_weakness = params[:primary_weakness]
+    monster.class_id = params[:class_id].to_i
+    monster.attack_element_id = params[:attack_element_id].to_i
+    monster.weakness_element_id = params[:weakness_element_id].to_i
     monster.generation = params[:generation].to_i
     monster.save
 
@@ -58,10 +58,10 @@ class MonstersController < Sinatra::Base
     id = params[:id].to_i
     monster = Monster.find id
     monster.name = params[:name]
-    monster.class = params[:class]
-    monster.primary_element = params[:primary_element]
-    monster.primary_weakness = params[:primary_weakness]
-    monster.generation = params[:generation]
+    monster.class_id = params[:class_id].to_i
+    monster.attack_element_id = params[:attack_element_id].to_i
+    monster.weakness_element_id = params[:weakness_element_id].to_i
+    monster.generation = params[:generation].to_i
     monster.save
 
     redirect "/#{id}"

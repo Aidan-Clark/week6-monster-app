@@ -6,22 +6,41 @@
 
   <div>
     <label>Class</label>
-    <input type="text" name="class" placeholder="Please Enter a Class" value="<%= @monster.class%>">
+    <select name="class_id">
+      <%for i in 1..15%>
+        <option value=<%= i %> <%= @monster.class_id == i ? "selected" : "" %>><%= @monster.get_info "class", i %></option>
+      <%end%>
+
+    </select>
   </div>
 
   <div>
-    <label>Primary Element</label>
-    <input type="text" name="primary_element" placeholder="Please Enter a Primary Element" value="<%= @monster.primary_element%>">
+    <label>Attack Element</label>
+    <select name="attack_element_id">
+      <%for i in 1..6%>
+        <option value=<%= i %> <%= @monster.attack_element_id == i ? "selected" : "" %>><%= @monster.get_info "element", i %></option>
+      <%end%>
+
+    </select>
   </div>
 
   <div>
-    <label>Primary Weakness</label>
-    <input type="text" name="primary_weakness" placeholder="Please Enter a Primary Weakness" value="<%= @monster.primary_weakness%>">
+    <label>Weakness</label>
+    <select name="weakness_element_id">
+      <%for i in 1..6%>
+        <option value=<%= i %> <%= @monster.weakness_element_id == i ? "selected" : "" %>><%= @monster.get_info "element", i %></option>
+      <%end%>
+      
+    </select>
   </div>
 
   <div>
     <label>Generation</label>
-    <input type="text" name="generation" placeholder="Please Enter a Generation" value="<%= @monster.generation%>">
+    <select name="generation">
+      <%for i in 1..5%>
+        <option value=<%= i %> <%= @monster.generation == i ? "selected" : "" %>><%= i %></option>
+      <%end%>
+    </select>
   </div>
 
 

@@ -3,15 +3,15 @@
 </h1>
 
 <p>
-  Class: <%= @monster.class%>
+  Class: <%= @monster.get_info "class", @monster.class_id%>
 </p>
 
 <p>
-  Primary Element: <%= @monster.primary_element%>
+  Attack Element: <%= @monster.get_info "element", @monster.attack_element_id%>
 </p>
 
 <p>
-  Primary Weakness: <%= @monster.primary_weakness%>
+  Weakness: <%= @monster.get_info "element", @monster.weakness_element_id%>
 </p>
 
 <p>
@@ -26,3 +26,5 @@
   <input type="hidden" name="_method" value="DELETE">
   <input type="submit" value="Delete Monster">
 </form>
+
+<img src="<%=@monster.get_img_path%>" alt="">
