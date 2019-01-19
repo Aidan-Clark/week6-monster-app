@@ -1,0 +1,28 @@
+<h1>
+  <%= @monster.name %>
+</h1>
+
+<p>
+  Class: <%= @monster.class%>
+</p>
+
+<p>
+  Primary Element: <%= @monster.primary_element%>
+</p>
+
+<p>
+  Primary Weakness: <%= @monster.primary_weakness%>
+</p>
+
+<p>
+  Generation: <%= @monster.generation%>
+</p>
+
+<form action="/<%= @monster.id%>/edit">
+  <input type="submit" value="Edit Monster">
+</form>
+
+<form action="/<%= @monster.id%>" method="POST">
+  <input type="hidden" name="_method" value="DELETE">
+  <input type="submit" value="Delete Monster">
+</form>

@@ -1,0 +1,36 @@
+<form action="/<%= @monster.id%>" method="POST">
+  <div>
+    <label>Name</label>
+    <input type="text" name="name" placeholder="Please Enter a Name" value="<%= @monster.name%>">
+  </div>
+
+  <div>
+    <label>Class</label>
+    <input type="text" name="class" placeholder="Please Enter a Class" value="<%= @monster.class%>">
+  </div>
+
+  <div>
+    <label>Primary Element</label>
+    <input type="text" name="primary_element" placeholder="Please Enter a Primary Element" value="<%= @monster.primary_element%>">
+  </div>
+
+  <div>
+    <label>Primary Weakness</label>
+    <input type="text" name="primary_weakness" placeholder="Please Enter a Primary Weakness" value="<%= @monster.primary_weakness%>">
+  </div>
+
+  <div>
+    <label>Generation</label>
+    <input type="text" name="generation" placeholder="Please Enter a Generation" value="<%= @monster.generation%>">
+  </div>
+
+
+  <% if @monster.id != nil%>
+    <input type="hidden" name="_method" value="PUT">
+  <% end %>
+
+  <div>
+    <input type="submit" value="Save Monster">
+  </div>
+
+</form>

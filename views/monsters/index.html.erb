@@ -1,0 +1,27 @@
+<% @monsters.each do |monster| %>
+  <div>
+
+    <h2>
+      <a href= "/<%= monster.id%>" >
+        <%= monster.name %>
+      </a>
+    </h2>
+
+    <p>
+      Class: <%= monster.class%>
+    </p>
+
+    <p>
+      Primary Element: <%= monster.primary_element%>
+    </p>
+
+    <p>
+      Primary Weakness: <%= monster.primary_weakness%>
+    </p>
+    
+    <p>
+      Generation: <%= monster.generation%>
+    </p>
+
+  </div>
+<% end %>
