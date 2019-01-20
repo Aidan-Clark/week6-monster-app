@@ -1,0 +1,119 @@
+require "pg"
+
+class Monster
+  attr_accessor :id, :name, :class_id, :attack_element_id, :weakness_element_id, :generation
+
+  def self.open_connection
+    return PG.connect(dbname: "monster_hunter", user: "postgres", password: "Acad3my1")
+  end
+
+  # Retrieves data from <table> with the id of <id>
+  def get_info table, id
+    conn = Monster.open_connection
+    sql = "SELECT #{table}_name FROM #{table} WHERE id = #{id}"
+    value = conn.exec(sql)[0]["#{table}_name"]
+
+    conn.close
+
+    return value
+  end
+
+  # returns path of image for that monster
+  def get_img_path
+    name = self.name
+    filename = name.downcase.tr(' ', '_')
+    return "images/#{filename}.png"
+  end
+
+  # Saves file
+  def save_file file
+    File.open("public/#{self.get_img_path}", 'wb') do |f|
+      f.write(file.read)
+    end
+  end
+
+  # Gets all monster info
+  def self.all
+    conn = self.open_connection
+    sql = "SELECT id, name, class_id, attack_element_id, weakness_element_id, generation FROM monster ORDER BY id;"
+    results = conn.exec(sql)
+
+    monsters = results.map do |tuple|
+      self.hydrate_data tuple
+    end
+
+    conn.close
+
+    return monsters
+  end
+
+  # Hydrates monster data
+  def self.hydrate_data monster_data
+    monster = Monster.new
+    monster.id = monster_data["id"].to_i
+    monster.name = monster_data["name"]
+    monster.class_id = monster_data["class_id"].to_i
+    monster.attack_element_id = monster_data["attack_element_id"].to_i
+    monster.weakness_element_id = monster_data["weakness_element_id"].to_i
+    monster.generation = monster_data["generation"].to_i
+
+    return monster
+  end
+
+  # Gets monster info for monster with id <id>
+  def self.find id
+    conn = self.open_connection
+    sql = "SELECT id, name, class_id, attack_element_id, weakness_element_id, generation FROM monster WHERE id=#{id};"
+
+    result = conn.exec(sql)[0]
+    monster = self.hydrate_data result
+
+    conn.close
+
+    return monster
+  end
+
+  # Changes values of monster
+  def update_values params
+    self.name = params[:name]
+    self.class_id = params[:class_id].to_i
+    self.attack_element_id = params[:attack_element_id].to_i
+    self.weakness_element_id = params[:weakness_element_id].to_i
+    self.generation = params[:generation].to_i
+
+    if params.has_key?(:image)
+      image = params[:image][:tempfile]
+      self.save_file image
+    end
+  end
+
+  # Saves monster info to databse
+  def save
+    conn = Monster.open_connection
+    if self.id == nil
+      sql = "INSERT INTO monster(name, class_id, attack_element_id, weakness_element_id, generation) VALUES('#{self.name}', '#{self.class_id}', '#{self.attack_element_id}', '#{self.weakness_element_id}', #{self.generation});"
+    else
+      sql = "UPDATE monster SET name='#{self.name}', class_id='#{self.class_id}', attack_element_id='#{self.attack_element_id}', weakness_element_id='#{self.weakness_element_id}', generation=#{self.generation} WHERE id=#{self.id};"
+    end
+    conn.exec(sql)
+
+    conn.close
+  end
+
+  # Deletes image
+  def delete_file
+    File.delete("public/#{self.get_img_path}") if File.exist?("public/#{self.get_img_path}")
+  end
+
+  # Removes info from database
+  def destroy
+    id = self.id
+    self.delete_file
+    conn = Monster.open_connection
+    sql = "DELETE FROM monster WHERE id=#{id}"
+    conn.exec(sql)
+
+    conn.close
+  end
+
+end

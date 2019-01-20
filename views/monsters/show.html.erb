@@ -1,0 +1,35 @@
+<div class="column push-right">
+  <h1>
+    <%= @monster.name %>
+  </h1>
+
+  <h2 class="push-down">
+    Class: <%= @monster.get_info "class", @monster.class_id%>
+  </h2>
+
+  <h2 class="push-down">
+    Attack Element: <%= @monster.get_info "element", @monster.attack_element_id%>
+  </h2>
+
+  <h2 class="push-down">
+    Weakness: <%= @monster.get_info "element", @monster.weakness_element_id%>
+  </h2 class="push-down">
+
+  <h2 class="push-down">
+    Generation: <%= @monster.generation%>
+  </h2>
+
+  <form class="push-down" action="/<%= @monster.id%>/edit">
+    <input type="submit" value="Edit Monster">
+  </form>
+
+  <form class="push-down" action="/<%= @monster.id%>" method="POST">
+    <input type="hidden" name="_method" value="DELETE">
+    <input type="submit" value="Delete Monster">
+  </form>
+
+</div>
+
+<div class="column large-image">
+  <img src="<%=@monster.get_img_path%>" alt="Picture of <%=@monster.name%>">
+</div>

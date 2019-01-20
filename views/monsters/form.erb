@@ -1,0 +1,67 @@
+<form class="push-right" action="/<%= @monster.id%>" method="POST" enctype="multipart/form-data">
+
+  <!-- Name input -->
+  <div class="input">
+    <label>Name</label>
+    <input type="text" name="name" placeholder="Please Enter a Name" value="<%= @monster.name%>">
+  </div>
+
+  <!-- Class input -->
+  <div class="input">
+    <label>Class</label>
+    <select name="class_id">
+      <%for i in 1..15%>
+        <option value=<%= i %> <%= @monster.class_id == i ? "selected" : "" %>><%= @monster.get_info "class", i %></option>
+      <%end%>
+
+    </select>
+  </div>
+
+  <!-- Attack element input -->
+  <div class="input">
+    <label>Attack Element</label>
+    <select name="attack_element_id">
+      <%for i in 1..6%>
+        <option value=<%= i %> <%= @monster.attack_element_id == i ? "selected" : "" %>><%= @monster.get_info "element", i %></option>
+      <%end%>
+
+    </select>
+  </div>
+
+  <!-- Weakness element input -->
+  <div class="input">
+    <label>Weakness</label>
+    <select name="weakness_element_id">
+      <%for i in 1..6%>
+        <option value=<%= i %> <%= @monster.weakness_element_id == i ? "selected" : "" %>><%= @monster.get_info "element", i %></option>
+      <%end%>
+
+    </select>
+  </div>
+
+  <!-- Generation input -->
+  <div class="input">
+    <label>Generation</label>
+    <select name="generation">
+      <%for i in 1..5%>
+        <option value=<%= i %> <%= @monster.generation == i ? "selected" : "" %>><%= i %></option>
+      <%end%>
+    </select>
+  </div>
+
+  <!-- Image input -->
+  <div class="input">
+    <label>Image</label>
+    <input type="file" name="image">
+  </div>
+
+  <!-- Changes verb to PUT instead of POST if monster already exists -->
+  <% if @monster.id != nil%>
+    <input type="hidden" name="_method" value="PUT">
+  <% end %>
+
+  <!-- Saves monster -->
+  <div class="input push-down">
+    <input type="submit" value="Save Monster">
+  </div>
+</form>

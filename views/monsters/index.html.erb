@@ -1,0 +1,32 @@
+<% @monsters.each do |monster| %>
+  <div class="monster-div">
+    <div class="push-right column">
+
+      <h2>
+        <a href= "/<%= monster.id%>" >
+          <%= monster.name %>
+        </a>
+      </h2>
+
+      <p>
+        Class: <%= monster.get_info "class", monster.class_id%>
+      </p>
+
+      <p>
+        Attack Element: <%= monster.get_info "element", monster.attack_element_id%>
+      </p>
+
+      <p>
+        Weakness: <%= monster.get_info "element", monster.weakness_element_id%>
+      </p>
+
+      <p>
+        Generation: <%= monster.generation%>
+      </p>
+    </div>
+
+    <div class="column">
+      <img src="<%=monster.get_img_path%>" alt="Picture of <%=monster.name%>">
+    </div>
+  </div>
+<% end %>
