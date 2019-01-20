@@ -7,6 +7,7 @@ class Monster
     return PG.connect(dbname: "monster_hunter", user: "postgres", password: "Acad3my1")
   end
 
+  # Retrieves data from <table> with the id of <id>
   def get_info table, id
     conn = Monster.open_connection
     sql = "SELECT #{table}_name FROM #{table} WHERE id = #{id}"
@@ -17,18 +18,21 @@ class Monster
     return value
   end
 
+  # returns path of image for that monster
   def get_img_path
     name = self.name
     filename = name.downcase.tr(' ', '_')
     return "images/#{filename}.png"
   end
 
+  # Saves file
   def save_file file
     File.open("public/#{self.get_img_path}", 'wb') do |f|
       f.write(file.read)
     end
   end
 
+  # Gets all monster info
   def self.all
     conn = self.open_connection
     sql = "SELECT id, name, class_id, attack_element_id, weakness_element_id, generation FROM monster ORDER BY id;"
@@ -43,6 +47,7 @@ class Monster
     return monsters
   end
 
+  # Hydrates monster data
   def self.hydrate_data monster_data
     monster = Monster.new
     monster.id = monster_data["id"].to_i
@@ -55,6 +60,7 @@ class Monster
     return monster
   end
 
+  # Gets monster info for monster with id <id>
   def self.find id
     conn = self.open_connection
     sql = "SELECT id, name, class_id, attack_element_id, weakness_element_id, generation FROM monster WHERE id=#{id};"
@@ -67,6 +73,7 @@ class Monster
     return monster
   end
 
+  # Changes values of monster
   def update_values params
     self.name = params[:name]
     self.class_id = params[:class_id].to_i
@@ -80,6 +87,7 @@ class Monster
     end
   end
 
+  # Saves monster info to databse
   def save
     conn = Monster.open_connection
     if self.id == nil
@@ -92,10 +100,12 @@ class Monster
     conn.close
   end
 
+  # Deletes image
   def delete_file
     File.delete("public/#{self.get_img_path}") if File.exist?("public/#{self.get_img_path}")
   end
 
+  # Removes info from database
   def destroy
     id = self.id
     self.delete_file
