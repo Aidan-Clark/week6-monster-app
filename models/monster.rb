@@ -20,7 +20,13 @@ class Monster
   def get_img_path
     name = self.name
     filename = name.downcase.tr(' ', '_')
-    return "/images/#{filename}.png"
+    return "images/#{filename}.png"
+  end
+
+  def save_file file
+    File.open("public/#{self.get_img_path}", 'wb') do |f|
+      f.write(file.read)
+    end
   end
 
   def self.all
@@ -61,6 +67,19 @@ class Monster
     return monster
   end
 
+  def update_values params
+    self.name = params[:name]
+    self.class_id = params[:class_id].to_i
+    self.attack_element_id = params[:attack_element_id].to_i
+    self.weakness_element_id = params[:weakness_element_id].to_i
+    self.generation = params[:generation].to_i
+
+    if params.has_key?(:image)
+      image = params[:image][:tempfile]
+      self.save_file image
+    end
+  end
+
   def save
     conn = Monster.open_connection
     if self.id == nil
@@ -73,8 +92,14 @@ class Monster
     conn.close
   end
 
-  def self.destroy id
-    conn = self.open_connection
+  def delete_file
+    File.delete("public/#{self.get_img_path}") if File.exist?("public/#{self.get_img_path}")
+  end
+
+  def destroy
+    id = self.id
+    self.delete_file
+    conn = Monster.open_connection
     sql = "DELETE FROM monster WHERE id=#{id}"
     conn.exec(sql)
 

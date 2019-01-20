@@ -43,11 +43,7 @@ class MonstersController < Sinatra::Base
   # CREATE
   post "/" do
     monster = Monster.new
-    monster.name = params[:name]
-    monster.class_id = params[:class_id].to_i
-    monster.attack_element_id = params[:attack_element_id].to_i
-    monster.weakness_element_id = params[:weakness_element_id].to_i
-    monster.generation = params[:generation].to_i
+    monster.update_values params
     monster.save
 
     redirect "/"
@@ -57,11 +53,7 @@ class MonstersController < Sinatra::Base
   put "/:id" do
     id = params[:id].to_i
     monster = Monster.find id
-    monster.name = params[:name]
-    monster.class_id = params[:class_id].to_i
-    monster.attack_element_id = params[:attack_element_id].to_i
-    monster.weakness_element_id = params[:weakness_element_id].to_i
-    monster.generation = params[:generation].to_i
+    monster.update_values params
     monster.save
 
     redirect "/#{id}"
@@ -70,7 +62,8 @@ class MonstersController < Sinatra::Base
   # DESTROY
   delete "/:id" do
     id = params[:id].to_i
-    Monster.destroy id
+    monster = Monster.find id
+    monster.destroy
 
     redirect "/"
   end
